@@ -19,3 +19,7 @@ SSLUseStapling on
 SSLStaplingCache "shmcb:logs/stapling-cache(150000)" 
 # Requires Apache >= 2.4.11 SSLSessionTickets 
 Off
+
+copia del archivo de host virtual 
+
+sudo cp /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sitesavailable/default-ssl.conf.bak
