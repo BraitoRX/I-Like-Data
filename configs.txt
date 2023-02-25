@@ -22,4 +22,41 @@ Off
 
 copia del archivo de host virtual 
 
-sudo cp /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sitesavailable/default-ssl.conf.bak
+sudo cp /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf.bak
+
+modifica el host virtual
+
+sudo nano /etc/apache2/sites-available/default-ssl.conf
+
+<IfModule mod_ssl.c> 
+ <VirtualHost _default_:443> 
+ServerAdmin coreo@uniandes.ede.co
+ServerName 192.168.74.148
+ DocumentRoot /var/www/html 
+ ErrorLog ${APACHE_LOG_DIR}/error.log 
+ CustomLog ${APACHE_LOG_DIR}/access.log combined 
+ 
+ SSLEngine on 
+ SSLCertificateFile /etc/ssl/certs/apache
+selfsigned.crt
+ SSLCertificateKeyFile /etc/ssl/private/apache-selfsigned.key 
+ <FilesMatch "\.(cgi|shtml|phtml|php)$" > 
+SSLOptions +StdEnvVars 
+ </FilesMatch> 
+ <Directory /usr/lib/cgi -bin> 
+ SSLOptions +StdEnvVars 
+ </Directory> 
+ </VirtualHost> 
+</IfModule>
+
+
+sudo ufw enable 
+sudo ufw allow 'Apache Full' 
+sudo ufw delete allow 'Apache'
+
+sudo a2enmod ssl
+sudo a2enmod headers
+sudo a2ensite default-ssl
+sudo a2enconf ssl-params
+sudo apache2ctl configtest
+sudo systemctl restart apache2
